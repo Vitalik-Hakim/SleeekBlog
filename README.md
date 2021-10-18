@@ -3,6 +3,13 @@ A simple blogging WebApp Application using flask and Sqlite3 DB
 
 `pip install flask`
 
+`python init_db.py`
+
+Finally run the Server file
+
+`python Server.py`
+
+
 Thats all you have your Sleek Blog
 
 Preview
