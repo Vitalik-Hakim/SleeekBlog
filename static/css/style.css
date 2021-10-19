@@ -1,6 +1,7 @@
 h1 {
-    border: 2px #eee solid;
-    color: rgb(65, 221, 86);
-    text-align: center;
-    padding: 10px;
+  border: 2px #eee solid;
+  color: rgb(65, 221, 86);
+  text-align: center;
+  padding: 10px;
+  cursor: pointer;
 }
