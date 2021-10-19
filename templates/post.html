@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
 {% block content %}
     <h2>{% block title %} {{ post['title'] }} {% endblock %}</h2>
     <span class="badge badge-primary">{{ post['created'] }}</span>
