@@ -100,8 +100,8 @@ def upload_image():
         if request.files:
             image = request.files["image"]
             image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
-            return render_template("upload_image.html", uploaded_image=image.filename)
-    return render_template("upload_image.html")
+            return render_template("Photos.html", uploaded_image=image.filename)
+    return redirect(url_for('index'))
 
 
 @app.route('/uploads/<filename>')
