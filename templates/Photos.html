@@ -4,13 +4,11 @@
 <html>
   <body>
     <h1>Photo Gallery</h1>
-  {% for url in links %}
     <img
       src="{{ url_for('send_uploaded_file', filename=uploaded_image) }}"
       height="250"
       width="150"
     />
-  {% endfor %}
   </body>
 </html>
 {% endblock %}

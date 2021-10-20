@@ -8,8 +8,8 @@ with open('schema.sql') as f:
 
 cur = connection.cursor()
 
-cur.execute("INSERT INTO posts (title, content) VALUES (?, ?)",
-            (' Title', 'Welcome to SleekBlog')
+cur.execute("INSERT INTO images (title, link) VALUES (?, ?)",
+            ('Bitcoin', 'uploads\bitcoin-logo.png')
             )
 
 connection.commit()

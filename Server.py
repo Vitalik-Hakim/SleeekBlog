@@ -24,7 +24,7 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'your secret key'
 app.config["IMAGE_UPLOADS"] = "uploads"
-
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 @app.route('/<int:post_id>')
 def post(post_id):
@@ -99,8 +99,7 @@ def upload_image():
     if request.method == "POST":
         if request.files:
             image = request.files["image"]
-        if image == '':
-            flash('No selected file')
+            #image.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
             image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
         return render_template("Photos.html", uploaded_image=image.filename)
     return redirect(url_for('index'))
