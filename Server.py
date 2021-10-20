@@ -99,8 +99,10 @@ def upload_image():
     if request.method == "POST":
         if request.files:
             image = request.files["image"]
+        if image == '':
+            flash('No selected file')
             image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
-            return render_template("Photos.html", uploaded_image=image.filename)
+        return render_template("Photos.html", uploaded_image=image.filename)
     return redirect(url_for('index'))
 
 
@@ -108,6 +110,5 @@ def upload_image():
 def send_uploaded_file(filename=''):
     from flask import send_from_directory
     return send_from_directory(app.config["IMAGE_UPLOADS"], filename)    
-
 
 app.run(host = '0.0.0.0', port = 5000 )
