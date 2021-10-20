@@ -3,6 +3,7 @@ from flask import Flask, render_template, request, url_for, flash, redirect
 import sqlite3
 from werkzeug.exceptions import abort
 from werkzeug.utils import secure_filename
+from flask import send_from_directory
 
 
 def get_post(post_id):
@@ -22,6 +23,7 @@ def get_db_connection():
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'your secret key'
+app.config["IMAGE_UPLOADS"] = "uploads"
 
 
 @app.route('/<int:post_id>')
@@ -87,31 +89,25 @@ def delete(id):
     flash('"{}" was successfully deleted!'.format(post['title']))
     return redirect(url_for('index'))
 
-    
-UPLOAD_FOLDER = '/uploads'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+@app.route("/post_photo")
+def post_photo():
+    return render_template("post_photo.html")
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        # check if the post request has the file part
-        if 'file' not in request.files:
-            flash('No file part')
-            return redirect(request.url)
-        file = request.files['file']
-        # If the user does not select a file, the browser submits an
-        # empty file without a filename.
-        if file.filename == '':
-            flash('No selected file')
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect(url_for('download_file', name=filename))
-    return render_template('upload.html')
+@app.route('/upload-image', methods=['GET', 'POST'])
+def upload_image():
+    if request.method == "POST":
+        if request.files:
+            image = request.files["image"]
+            image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
+            return render_template("upload_image.html", uploaded_image=image.filename)
+    return render_template("upload_image.html")
+
+
+@app.route('/uploads/<filename>')
+def send_uploaded_file(filename=''):
+    from flask import send_from_directory
+    return send_from_directory(app.config["IMAGE_UPLOADS"], filename)    
+
 
 app.run(host = '0.0.0.0', port = 5000 )
