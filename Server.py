@@ -41,8 +41,8 @@ def index():
     images = conn.execute('SELECT * FROM images').fetchall()
     #conn.execute('SELECT * FROM images WHERE id = 1', (id,))
     conn.close()
-    response = make_response('Any thing...')
-    resp.set_cookie('name', 'value')
+    #response = make_response('Any thing...')
+    #resp.set_cookie('name', 'value')
     return render_template('index.html', posts=posts, images=images)
 
 
