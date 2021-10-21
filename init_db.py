@@ -9,7 +9,7 @@ with open('schema.sql') as f:
 cur = connection.cursor()
 
 cur.execute("INSERT INTO images (title, link) VALUES (?, ?)",
-            ('Bitcoin', 'uploads\bitcoin-logo.png')
+            ('Bitcoin', 'uploads/bitcoin-logo.png')
             )
 
 connection.commit()

@@ -35,10 +35,15 @@ def post(post_id):
 
 @app.route('/')
 def index():
+    #image = get_post(id)
     conn = get_db_connection()
     posts = conn.execute('SELECT * FROM posts').fetchall()
+    images = conn.execute('SELECT * FROM images').fetchall()
+    #conn.execute('SELECT * FROM images WHERE id = 1', (id,))
     conn.close()
-    return render_template('index.html', posts=posts)
+    response = make_response('Any thing...')
+    resp.set_cookie('name', 'value')
+    return render_template('index.html', posts=posts, images=images)
 
 
 @app.route('/create', methods=('GET', 'POST'))
@@ -57,6 +62,23 @@ def create():
             conn.close()
             return redirect(url_for('index'))
     return render_template('create.html')
+
+@app.route('/post_image', methods=('GET', 'POST'))
+def create_photo():
+    if request.method == 'POST':
+        title = request.form['title']
+        content = request.form['link']
+
+        if not title:
+            flash('Title is required!')
+        else:
+            conn = get_db_connection()
+            conn.execute('INSERT INTO images (title, link) VALUES (?, ?)',
+                         (title, content))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('index'))
+    return render_template('create_photo.html')
 
 @app.route('/<int:id>/edit', methods=('GET', 'POST'))
 def edit(id):
