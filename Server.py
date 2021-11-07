@@ -131,5 +131,5 @@ def upload_image():
 def send_uploaded_file(filename=''):
     from flask import send_from_directory
     return send_from_directory(app.config["IMAGE_UPLOADS"], filename)    
-
+# Can change port if you want
 app.run(host = '0.0.0.0', port = 5000 )
