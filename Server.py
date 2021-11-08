@@ -126,6 +126,10 @@ def upload_image():
         return render_template("Photos.html", uploaded_image=image.filename)
     return redirect(url_for('index'))
 
+@app.route('/uploads')
+def show_pictures(filename=''):
+    return render_template('Gallery.html', filename=filename)
+
 
 @app.route('/uploads/<filename>')
 def send_uploaded_file(filename=''):
