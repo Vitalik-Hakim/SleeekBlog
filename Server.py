@@ -4,11 +4,17 @@ import sqlite3
 from werkzeug.exceptions import abort
 from werkzeug.utils import secure_filename
 from flask import send_from_directory
+from os import listdir
+from os.path import isfile, join
+
+
+
+
 
 
 def get_post(post_id):
     conn = get_db_connection()
-    post = conn.execute('SELECT * FROM posts WHERE id = ?',
+    post = conn.execute('SELECT * FROM posts WHERE title = ?',
                         (post_id,)).fetchone()
     conn.close()
     if post is None:
@@ -26,7 +32,7 @@ app.config['SECRET_KEY'] = 'your secret key'
 app.config["IMAGE_UPLOADS"] = "uploads"
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
-@app.route('/<int:post_id>')
+@app.route('/<post_id>')
 def post(post_id):
     post = get_post(post_id)
     return render_template('post.html', post=post)
@@ -80,7 +86,7 @@ def create_photo():
             return redirect(url_for('index'))
     return render_template('create_photo.html')
 
-@app.route('/<int:id>/edit', methods=('GET', 'POST'))
+@app.route('/<id>/edit', methods=('GET', 'POST'))
 def edit(id):
     post = get_post(id)
 
@@ -93,7 +99,7 @@ def edit(id):
         else:
             conn = get_db_connection()
             conn.execute('UPDATE posts SET title = ?, content = ?'
-                         ' WHERE id = ?',
+                         ' WHERE title = ?',
                          (title, content, id))
             conn.commit()
             conn.close()
@@ -101,11 +107,11 @@ def edit(id):
 
     return render_template('edit.html', post=post)
 
-@app.route('/<int:id>/delete', methods=('POST',))
+@app.route('/<id>/delete', methods=('POST',))
 def delete(id):
     post = get_post(id)
     conn = get_db_connection()
-    conn.execute('DELETE FROM posts WHERE id = ?', (id,))
+    conn.execute('DELETE FROM posts WHERE title = ?', (id,))
     conn.commit()
     conn.close()
     flash('"{}" was successfully deleted!'.format(post['title']))
@@ -123,17 +129,22 @@ def upload_image():
             image = request.files["image"]
             #image.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
             image.save(os.path.join(app.config["IMAGE_UPLOADS"], image.filename))
-        return render_template("Photos.html", uploaded_image=image.filename)
+        return redirect(url_for('show'))
     return redirect(url_for('index'))
 
-@app.route('/uploads')
-def show_pictures(filename=''):
-    return render_template('Gallery.html', filename=filename)
+@app.route('/photos')
+def show():
+    mypath = "uploads"
+    onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
+
+    return render_template('Gallery.html', onlyfiles=onlyfiles, post=post)
+
 
 
 @app.route('/uploads/<filename>')
 def send_uploaded_file(filename=''):
     from flask import send_from_directory
-    return send_from_directory(app.config["IMAGE_UPLOADS"], filename)    
+    return send_from_directory(app.config["IMAGE_UPLOADS"], filename)  
+
 # Can change port if you want
-app.run(host = '0.0.0.0', port = 5000 )
+app.run(host = '0.0.0.0', port = 5000)

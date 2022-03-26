@@ -1,15 +1,14 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <html>
   <body>
     <h1>Photo Gallery</h1>
+    {% for images in onlyfiles %}
     <img
       src="{{ url_for('send_uploaded_file', filename=uploaded_image) }}"
       height="250"
       width="150"
     />
-    
+    {% endfor %}
   </body>
 </html>
 {% endblock %}

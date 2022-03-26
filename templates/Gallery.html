@@ -1,9 +1,60 @@
 {% extends 'base.html' %} {% block content %}
-<h1>{% block title %} Images posted {% endblock %}</h1>
-
+<h1>{% block title %} User posted images {% endblock %}</h1>
+{% for name in onlyfiles %}
+<div class="card-deck">
+  <div class="card">
     <img
-      src="{{ url_for('send_uploaded_file', filename=uploaded_image) }}"
-      height="250"
-      width="150"
+      class="card-img-top"
+      src="{{ 'uploads/'+name }}"
+      alt="Card image cap"
     />
-{% endblock %}
+    <div class="card-body">
+      <h5 class="card-title">{{name}}</h5>
+      <p class="card-text">
+        This is a wider card with supporting text below as a natural lead-in to
+        additional content.
+      </p>
+      <a href="#" class="btn btn-primary">Explore</a>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">Last updated 3 mins ago</small>
+    </div>
+  </div>
+  <div class="card">
+    <img
+      class="card-img-top"
+      src="{{ 'uploads/'+name }}"
+      alt="Card image cap"
+    />
+    <div class="card-body">
+      <h5 class="card-title">{{name}}</h5>
+      <p class="card-text">
+        This card has supporting text below as a natural lead-in to additional
+        content.
+      </p>
+      <a href="#" class="btn btn-primary">Explore</a>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">Last updated 3 mins ago</small>
+    </div>
+  </div>
+  <div class="card">
+    <img
+      class="card-img-top"
+      src="{{ 'uploads/'+name }}"
+      alt="Card image cap"
+    />
+    <div class="card-body">
+      <h5 class="card-title">{{name}}</h5>
+      <p class="card-text">
+        This is a wider card with supporting text below as a natural lead-in to
+        additional content.
+      </p>
+      <a href="#" class="btn btn-primary">Explore</a>
+    </div>
+    <div class="card-footer">
+      <small class="text-muted">Last updated 3 mins ago</small>
+    </div>
+  </div>
+</div>
+{% endfor %} {% endblock %}
