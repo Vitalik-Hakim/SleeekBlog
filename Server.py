@@ -25,7 +25,12 @@ def get_db_connection():
     conn = sqlite3.connect('database.db')
     conn.row_factory = sqlite3.Row
     return conn
-
+def num_of_uploads():
+     list_of_files = os.listdir("/photos")
+    if files in list_of_files:
+        file1 = open(files,"r")
+        verify = file1.read().splitlines()
+    
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'your secret key'
